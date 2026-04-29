@@ -97,7 +97,7 @@ Expected Output of `host_context_notes.md` :
 ```
 
 
-**Module 01_Phase 2 — Internet Basics, DNS, HTTP, dan Validasi Service **
+**Module 01_Phase 2 — Internet Basics, DNS, HTTP, dan Validasi Service**
 This phase is not intended as an introduction to internet theory. The purpose is to demonstrate that domains, IP addresses, HTTP headers, and local services can actually be read and validated quickly from the appropriate workstation. In this module, Kali is used as the validation workstation, while Ubuntu serves as the place where evidence is collected in an organized manner.
 
 **Phase 2.1. DNS Lookup and Name Resolution on Kali**
