@@ -527,3 +527,343 @@ Nmap done: 1 IP address (1 host up) scanned in 11.62 seconds
 ```
 
 Meaning of the output: Good service discovery always compares the internal host perspective with the assessment perspective.
+
+
+**Module 03_Phase 5 — Log Management, Monitoring, and Evidence Correlation**
+
+This phase maximizes the use of Ubuntu and Kali resources: journals, authentication log samples, PCAP samples, and YARA. The primary focus is on building context, not merely running standalone commands.
+
+**Phase 5.1. Review Recent System Events and Authentication Patterns**
+```
+journalctl -n 50 --no-pager | tee ~/module03/evidence/monitoring/journal_review.txt
+grep -i "failed\|accepted" ~/datasets/logs/linux/auth.log.sample | tee ~/module03/evidence/monitoring/auth_log_review.txt
+```
+
+Function of the command:
+- Review recent system events and observe authentication patterns.
+- Train students to recognize successful events, failed logins, and event timing context.
+
+Expected output:
+- Snippets of journal events are displayed.
+- Lines containing failed and accepted login events from the authentication log dataset are displayed.
+```
+journal_review.txt:
+Hint: You are currently not seeing messages from other users and the system.
+      Users in groups 'adm', 'systemd-journal' can see all messages.
+      Pass -q to turn off this notice.
+May 01 12:14:43 localhost systemd[279234]: Listening on snapd.session-agent.socket - REST API socket for snapd user session agent.
+May 01 12:14:43 localhost systemd[279234]: Listening on dbus.socket - D-Bus User Message Bus Socket.
+May 01 12:14:43 localhost systemd[279234]: Listening on gpg-agent-ssh.socket - GnuPG cryptographic agent (ssh-agent emulation).
+May 01 12:14:43 localhost systemd[279234]: Reached target sockets.target - Sockets.
+May 01 12:14:43 localhost systemd[279234]: Reached target basic.target - Basic System.
+May 01 12:14:43 localhost systemd[279234]: Reached target default.target - Main User Target.
+May 01 12:14:43 localhost systemd[279234]: Startup finished in 131ms.
+May 01 12:19:49 localhost systemd[279234]: launchpadlib-cache-clean.service - Clean up old files in the Launchpadlib cache was skipped because of an unmet condition check (ConditionPathExists=/home/jccsah001012/.launchpadlib/api.launchpad.net/cache).
+May 01 12:28:27 localhost systemd[279234]: Activating special unit exit.target...
+May 01 12:28:27 localhost systemd[279234]: Stopped target default.target - Main User Target.
+May 01 12:28:27 localhost systemd[279234]: Stopped target basic.target - Basic System.
+May 01 12:28:27 localhost systemd[279234]: Stopped target paths.target - Paths.
+May 01 12:28:27 localhost systemd[279234]: Stopped target sockets.target - Sockets.
+May 01 12:28:27 localhost systemd[279234]: Stopped target timers.target - Timers.
+May 01 12:28:27 localhost systemd[279234]: Stopped launchpadlib-cache-clean.timer - Clean up old files in the Launchpadlib cache.
+May 01 12:28:27 localhost systemd[279234]: Closed dbus.socket - D-Bus User Message Bus Socket.
+May 01 12:28:27 localhost systemd[279234]: Closed dirmngr.socket - GnuPG network certificate management daemon.
+May 01 12:28:27 localhost systemd[279234]: Closed gpg-agent-browser.socket - GnuPG cryptographic agent and passphrase cache (access for web browsers).
+May 01 12:28:27 localhost systemd[279234]: Closed gpg-agent-extra.socket - GnuPG cryptographic agent and passphrase cache (restricted).
+May 01 12:28:27 localhost systemd[279234]: Stopping gpg-agent-ssh.socket - GnuPG cryptographic agent (ssh-agent emulation)...
+May 01 12:28:27 localhost systemd[279234]: Closed gpg-agent.socket - GnuPG cryptographic agent and passphrase cache.
+May 01 12:28:27 localhost systemd[279234]: Closed keyboxd.socket - GnuPG public key management service.
+May 01 12:28:27 localhost systemd[279234]: Closed pk-debconf-helper.socket - debconf communication socket.
+May 01 12:28:27 localhost systemd[279234]: Closed snapd.session-agent.socket - REST API socket for snapd user session agent.
+May 01 12:28:27 localhost systemd[279234]: Closed gpg-agent-ssh.socket - GnuPG cryptographic agent (ssh-agent emulation).
+May 01 12:28:27 localhost systemd[279234]: Removed slice app.slice - User Application Slice.
+May 01 12:28:27 localhost systemd[279234]: Reached target shutdown.target - Shutdown.
+May 01 12:28:27 localhost systemd[279234]: Finished systemd-exit.service - Exit the Session.
+May 01 12:28:27 localhost systemd[279234]: Reached target exit.target - Exit the Session.
+May 01 12:28:27 localhost (sd-pam)[279235]: pam_unix(systemd-user:session): session closed for user jccsah001012
+May 01 12:29:51 localhost systemd[279397]: Queued start job for default target default.target.
+May 01 12:29:51 localhost systemd[279397]: Created slice app.slice - User Application Slice.
+May 01 12:29:51 localhost systemd[279397]: Started launchpadlib-cache-clean.timer - Clean up old files in the Launchpadlib cache.
+May 01 12:29:51 localhost systemd[279397]: Reached target paths.target - Paths.
+May 01 12:29:51 localhost systemd[279397]: Reached target timers.target - Timers.
+May 01 12:29:51 localhost systemd[279397]: Starting dbus.socket - D-Bus User Message Bus Socket...
+May 01 12:29:51 localhost systemd[279397]: Listening on dirmngr.socket - GnuPG network certificate management daemon.
+May 01 12:29:51 localhost systemd[279397]: Listening on gpg-agent-browser.socket - GnuPG cryptographic agent and passphrase cache (access for web browsers).
+May 01 12:29:51 localhost systemd[279397]: Listening on gpg-agent-extra.socket - GnuPG cryptographic agent and passphrase cache (restricted).
+May 01 12:29:51 localhost systemd[279397]: Starting gpg-agent-ssh.socket - GnuPG cryptographic agent (ssh-agent emulation)...
+May 01 12:29:51 localhost systemd[279397]: Listening on gpg-agent.socket - GnuPG cryptographic agent and passphrase cache.
+May 01 12:29:51 localhost systemd[279397]: Listening on keyboxd.socket - GnuPG public key management service.
+May 01 12:29:51 localhost systemd[279397]: Listening on pk-debconf-helper.socket - debconf communication socket.
+May 01 12:29:51 localhost systemd[279397]: Listening on snapd.session-agent.socket - REST API socket for snapd user session agent.
+May 01 12:29:51 localhost systemd[279397]: Listening on dbus.socket - D-Bus User Message Bus Socket.
+May 01 12:29:51 localhost systemd[279397]: Listening on gpg-agent-ssh.socket - GnuPG cryptographic agent (ssh-agent emulation).
+May 01 12:29:51 localhost systemd[279397]: Reached target sockets.target - Sockets.
+May 01 12:29:51 localhost systemd[279397]: Reached target basic.target - Basic System.
+May 01 12:29:51 localhost systemd[279397]: Reached target default.target - Main User Target.
+May 01 12:29:51 localhost systemd[279397]: Startup finished in 125ms.
+
+auth_log_review.txt:
+Apr 21 09:00:01 labhost sshd[1201]: Failed password for invalid user admin from 10.10.10.50 port 53122 ssh2
+Apr 21 09:00:05 labhost sshd[1208]: Failed password for invalid user test from 10.10.10.50 port 53130 ssh2
+Apr 21 09:00:11 labhost sshd[1215]: Failed password for jccsah001001 from 10.10.10.50 port 53144 ssh2
+Apr 21 09:00:18 labhost sshd[1221]: Accepted password for jccsah001001 from 10.10.10.50 port 53155 ssh2
+```
+Meaning of the output: Basic monitoring is not just about collecting logs, but about understanding changes, failures, and indications of abnormal activity.
+
+**Phase 5.2. Review a PCAP Sample with Tshark**
+```
+tshark -r ~/datasets/pcap/localhost_web_lab.pcap | head -n 20 | tee ~/module03/evidence/monitoring/pcap_review.txt
+```
+
+Function of the command:
+- Review traffic samples without needing live packet capture.
+- Introduce packet summary analysis as part of network observation.
+
+Expected output:
+- A frame summary from the `PCAP` is displayed.
+- There are indications of traffic toward ports 3000 or 8081 if the PCAP file is available.
+```
+pcap_review.txt:
+    1   0.000000    127.0.0.1 → 127.0.0.1    TCP 74 51306 → 3000 [SYN] Seq=0 Win=65495 Len=0 MSS=65495 SACK_PERM TSval=2922010966 TSecr=0 WS=128
+    2   0.000021    127.0.0.1 → 127.0.0.1    TCP 74 3000 → 51306 [SYN, ACK] Seq=0 Ack=1 Win=65483 Len=0 MSS=65495 SACK_PERM TSval=2922010966 TSecr=2922010966 WS=128
+    3   0.000036    127.0.0.1 → 127.0.0.1    TCP 66 51306 → 3000 [ACK] Seq=1 Ack=1 Win=65536 Len=0 TSval=2922010966 TSecr=2922010966
+    4   0.000307    127.0.0.1 → 127.0.0.1    HTTP 143 GET / HTTP/1.1 
+    5   0.000323    127.0.0.1 → 127.0.0.1    TCP 66 3000 → 51306 [ACK] Seq=1 Ack=78 Win=65408 Len=0 TSval=2922010966 TSecr=2922010966
+    6   0.010115    127.0.0.1 → 127.0.0.1    TCP 14546 HTTP/1.1 200 OK  [TCP segment of a reassembled PDU]
+    7   0.010133    127.0.0.1 → 127.0.0.1    TCP 66 51306 → 3000 [ACK] Seq=78 Ack=14481 Win=108416 Len=0 TSval=2922010976 TSecr=2922010976
+    8   0.010164    127.0.0.1 → 127.0.0.1    TCP 51591 3000 → 51306 [PSH, ACK] Seq=14481 Ack=78 Win=65536 Len=51525 TSval=2922010976 TSecr=2922010976 [TCP segment of a reassembled PDU]
+    9   0.010186    127.0.0.1 → 127.0.0.1    TCP 66 51306 → 3000 [ACK] Seq=78 Ack=66006 Win=77056 Len=0 TSval=2922010976 TSecr=2922010976
+   10   0.010580    127.0.0.1 → 127.0.0.1    HTTP 9532 HTTP/1.1 200 OK  (text/html)
+   11   0.010594    127.0.0.1 → 127.0.0.1    TCP 66 51306 → 3000 [ACK] Seq=78 Ack=75472 Win=118400 Len=0 TSval=2922010977 TSecr=2922010977
+   12   0.010662    127.0.0.1 → 127.0.0.1    TCP 66 51306 → 3000 [FIN, ACK] Seq=78 Ack=75472 Win=118400 Len=0 TSval=2922010977 TSecr=2922010977
+   13   0.012414    127.0.0.1 → 127.0.0.1    TCP 66 3000 → 51306 [FIN, ACK] Seq=75472 Ack=79 Win=65536 Len=0 TSval=2922010979 TSecr=2922010977
+   14   0.012433    127.0.0.1 → 127.0.0.1    TCP 66 51306 → 3000 [ACK] Seq=79 Ack=75473 Win=118400 Len=0 TSval=2922010979 TSecr=2922010979
+   15   0.018024    127.0.0.1 → 127.0.0.1    TCP 74 58088 → 8081 [SYN] Seq=0 Win=65495 Len=0 MSS=65495 SACK_PERM TSval=2922010984 TSecr=0 WS=128
+   16   0.018037    127.0.0.1 → 127.0.0.1    TCP 74 8081 → 58088 [SYN, ACK] Seq=0 Ack=1 Win=65483 Len=0 MSS=65495 SACK_PERM TSval=2922010984 TSecr=2922010984 WS=128
+   17   0.018048    127.0.0.1 → 127.0.0.1    TCP 66 58088 → 8081 [ACK] Seq=1 Ack=1 Win=65536 Len=0 TSval=2922010984 TSecr=2922010984
+   18   0.018101    127.0.0.1 → 127.0.0.1    HTTP 143 GET / HTTP/1.1 
+   19   0.018110    127.0.0.1 → 127.0.0.1    TCP 66 8081 → 58088 [ACK] Seq=1 Ack=78 Win=65408 Len=0 TSval=2922010984 TSecr=2922010984
+   20   0.024162    127.0.0.1 → 127.0.0.1    HTTP 489 HTTP/1.1 302 Found
+```
+Meaning of the output: Analysts are often safer and more efficient working from existing capture files rather than capturing production traffic.
+
+**Phase 5.3. Run YARA on Relevant Samples**
+```
+cat > ~/module03/tmp/basic_keywords.yar <<'EOF' 
+rule suspicious_keywords { 
+strings: 
+$a = "urgent" nocase 
+$b = "verify" nocase 
+$c = "password" nocase 
+condition: 
+any of them 
+}
+EOF
+yara ~/module03/tmp/basic_keywords.yar ~/datasets/phishing/sample_email_1.txt | tee ~/module03/evidence/monitoring/yara_result.txt
+```
+
+Function of the command:
+- Introduce rule-based review on simple text artifacts.
+- Demonstrate that YARA can be used early as an observation tool, without waiting for malware-focused labs.
+
+Expected output:
+- `YARA` results are displayed if the targeted strings are found.
+```
+suspicious_keywords /home/jccsah001012/datasets/phishing/sample_email_1.txt
+```
+
+**Module 03_Phase 6 — Automation for Parsing and Evidence Summarization**
+
+This phase serves as a direct bridge to scripting and automation modules. We are ask to build two complementary approaches: Bash for quick filtering and Python for more structured summaries.
+
+**Phase 6.1. Bash Parser for Authentication Log Samples**
+```
+cat > ~/module03/tmp/auth_parser.sh <<'EOF' 
+#!/usr/bin/env bash 
+LOG=~/datasets/logs/linux/auth.log.sample 
+echo "=== Failed logins ===" 
+grep -i "Failed password" "$LOG" 
+echo 
+echo "=== Source IP summary ===" 
+grep -i "Failed password" "$LOG" | awk '{print $(NF-3), $(NF-1)}' | sort | uniq -c
+EOF
+chmod +x ~/module03/tmp/auth_parser.sh
+~/module03/tmp/auth_parser.sh | tee ~/module03/evidence/automation/bash_parser_output.txt
+```
+
+Function of the command:
+- Train students to create small but useful and explainable parsers.
+- Demonstrate that Bash is still highly relevant for quick triage tasks.
+
+Expected output:
+- A list of `failed logins and a summary of source IP addresses` are displayed.
+```
+=== Failed logins ===
+Apr 21 09:00:01 labhost sshd[1201]: Failed password for invalid user admin from 10.10.10.50 port 53122 ssh2
+Apr 21 09:00:05 labhost sshd[1208]: Failed password for invalid user test from 10.10.10.50 port 53130 ssh2
+Apr 21 09:00:11 labhost sshd[1215]: Failed password for jccsah001001 from 10.10.10.50 port 53144 ssh2
+
+=== Source IP summary ===
+      1 10.10.10.50 53122
+      1 10.10.10.50 53130
+      1 10.10.10.50 53144
+```
+Meaning of the output:
+Good automation does not have to be complex; it must be clear, useful, and purpose-driven.
+
+**Phase 6.2. Python Parser for Authentication Log Samples**
+```
+cat > ~/module03/tmp/auth_parser.py <<'EOF'
+import re
+from collections import Counter
+from pathlib import Path
+
+log = Path.home() / 'datasets' / 'logs' / 'linux' / 'auth.log.sample'
+pattern = re.compile(r'Failed password .* from (\S+)')
+ips = Counter()
+
+for line in log.read_text().splitlines():
+    m = pattern.search(line)
+    if m:
+        ips[m.group(1)] += 1
+
+print('failed_login_ip_summary=', dict(ips))
+EOF
+python3 ~/module03/tmp/auth_parser.py | tee ~/module03/evidence/automation/python_parser_output.txt
+```
+
+Function of the command:
+- Build a more structured summary using Python.
+- Familiarize students with working with files, regular expressions, and counters in a simple yet useful way.
+
+Expected output:
+- A summary of source IP addresses and their occurrence counts is displayed.
+```
+failed_login_ip_summary= {'10.10.10.50': 3}
+```
+Meaning of the output:
+Python will become a primary tool in future modules. Here, students begin using it within the context of real evidence.
+
+**Phase 6.3. Record Notes on Scheduled Automation Concepts and Their Limitations**
+```
+cat > ~/module03/evidence/automation/cron_notes.md <<'EOF' 
+# Cron Notes
+ - Cron dapat dipakai untuk task berkala seperti parsing log, checksum file, atau report 
+generation.
+ - Pada shared lab, student tidak melakukan perubahan sistem global.
+ - Fokus modul ini adalah memahami konsep scheduling dan peran otomasi, bukan memodifikasi service sistem.
+EOF
+cat ~/module03/evidence/automation/cron_notes.md
+```
+
+Function of the command:
+- Explain the role of automation in host operations without encouraging unnecessary system modifications.
+
+Expected output:
+- The `cron_notes.md` file is available.
+```
+# Cron Notes
+ - Cron dapat dipakai untuk task berkala seperti parsing log, checksum file, atau report 
+generation.
+ - Pada shared lab, student tidak melakukan perubahan sistem global.
+ - Fokus modul ini adalah memahami konsep scheduling dan peran otomasi, bukan memodifikasi service sistem.
+```
+Meaning of the output: We understand that automation must be used with discipline and within the defined scope.
+
+
+**Module 03_Phase 7 — Final Assessment and Bridge to the Next Module**
+
+This module concludes with a brief assessment so that we become accustomed to transforming technical output into evaluations that can be understood by others. It also serves as a bridge to Python, automation, secure coding, and blue team analysis modules.
+
+**Phase 7.1. Write a Brief Host Security Readiness Assessment**
+```
+cat > ~/module03/reports/os_security_assessment.md <<'EOF' 
+# OS Security Assessment 
+ 
+## Summary 
+Ubuntu berfungsi sebagai primary analysis host dan Kali sebagai validation workstation. 
+Baseline host, metadata file, process state, session information, logs, PCAP sample, dan 
+automation dasar telah ditinjau. 
+ 
+## Key observations
+ - Host context and resource state collected
+ - File metadata and permissions reviewed
+ - Process and session information reviewed
+ - Logs and PCAP sample analyzed
+ - Bash and Python parsing completed 
+ 
+## Operational takeaway 
+Host analysis harus dimulai dari context, metadata, process, dan evidence, bukan asumsi. Validation dari Kali membantu melihat exposure dari sudut pandang yang berbeda.
+EOF
+cat ~/module03/reports/os_security_assessment.md
+```
+
+Function of the command:
+- Build the habit of concluding practicum activities with concise assessments that can be read professionally.
+
+Expected output:
+- The `os_security_assessment.md` file is available.
+```
+# OS Security Assessment 
+ 
+## Summary 
+Ubuntu berfungsi sebagai primary analysis host dan Kali sebagai validation workstation. 
+Baseline host, metadata file, process state, session information, logs, PCAP sample, dan 
+automation dasar telah ditinjau. 
+ 
+## Key observations
+ - Host context and resource state collected
+ - File metadata and permissions reviewed
+ - Process and session information reviewed
+ - Logs and PCAP sample analyzed
+ - Bash and Python parsing completed 
+ 
+## Operational takeaway 
+Host analysis harus dimulai dari context, metadata, process, dan evidence, bukan asumsi. Validation dari Kali membantu melihat exposure dari sudut pandang yang berbeda.
+```
+Meaning of the output:
+The value of an analyst is not limited to the commands they run, but also the quality of the assessments they can explain.
+
+**Phase 7.2. Write Operating Notes as a Bridge to the Next Module**
+```
+cat > ~/module03/reports/operating_notes.md <<'EOF' 
+# Operating Notes 
+ 
+## What should carry forward
+ - Evidence must stay organized
+ - Ubuntu remains primary analysis host
+ - Kali remains validation workstation
+ - Bash and Python should be used together, not separately
+ - Process, logs, and metadata should be correlated, not reviewed in isolation 
+ 
+## Bridge to next module
+ - Modul 04 akan memperluas scripting dan automation
+ - Beberapa pola parsing di modul ini akan dipakai ulang pada log analysis, hunting, dan tool building
+EOF
+cat ~/module03/reports/operating_notes.md
+```
+
+Function of the command:
+- Encourage students to see continuity between modules rather than viewing each module as isolated.
+
+Expected output:
+- The `operating_notes.md` file is available.
+```
+# Operating Notes 
+ 
+## What should carry forward
+ - Evidence must stay organized
+ - Ubuntu remains primary analysis host
+ - Kali remains validation workstation
+ - Bash and Python should be used together, not separately
+ - Process, logs, and metadata should be correlated, not reviewed in isolation 
+ 
+## Bridge to next module
+ - Modul 04 akan memperluas scripting dan automation
+ - Beberapa pola parsing di modul ini akan dipakai ulang pada log analysis, hunting, dan tool building
+```
+Meaning of the output: We are positioned to enter the next module with a more mature context.
+
+**Module 03_Phase 8 — Final Assessment and Bridge to the Next Module**
+
+Module 03 positions the operating system as a real object of observation. We not only read files and processes, but also learn to connect metadata, permissions, sessions, services, logs, and traffic samples into a unified context. With this foundation, the next modules can move further into scripting, automation, secure coding, blue team analysis, and threat hunting without needing to return to the fundamentals of host observation.
