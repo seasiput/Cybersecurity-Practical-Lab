@@ -1,4 +1,4 @@
-**Module 03 — Host Analysis, Permission Review, Process Observation, Logging, and Automation**
+# Module 03 — Host Analysis, Permission Review, Process Observation, Logging, and Automation
 
 This guide is intended for us to carry out practicum activities independently or under supervision on the Ubuntu Lab and Kali Lab. The focus of this module is to build working patterns relevant to junior security analysts, SOC analysts, system support personnel, and security operations teams: understanding host context, reviewing metadata and permissions, correlating processes with services, analyzing logs and PCAPs, and concluding the practice with organized automation and assessment.
 
@@ -21,7 +21,7 @@ This guide is intended for us to carry out practicum activities independently or
 - Build simple automation using Bash and Python for evidence parsing.
 - Conclude the practicum with a concise, clear, and professionally readable assessment.
 
-**Module 03_Phase 1 — Preparing the Workspace and Tool Readiness**
+## Module 03_Phase 1 — Preparing the Workspace and Tool Readiness
 
 This phase ensures that we work with a well-organized structure and clearly understand which resources are available for use. After this phase is completed, there should no longer be confusion regarding helpers, datasets, or evidence locations.
 
@@ -62,7 +62,7 @@ Expected output:
 <img width="1757" height="901" alt="image" src="https://github.com/user-attachments/assets/057f1bb5-8c9b-496b-b092-342e268c52f6" />
 
 
-**Module 03_Phase 2 — Host Baseline, User Context, and Resource State**
+## Module 03_Phase 2 — Host Baseline, User Context, and Resource State
 
 Before analyzing risks, we must understand the context of the host they are using. In real-world environments, many misinterpretations occur because host context and resource state are not checked from the beginning.
 
@@ -153,7 +153,7 @@ Swap:          495Mi       768Ki       495Mi
 Meaning of the output: Security symptoms are often mixed with performance symptoms. A resource baseline helps distinguish between the two.
 
 
-**Module 03_Phase 3 — File System, Metadata, Ownership, and Permission Review**
+## Module 03_Phase 3 — File System, Metadata, Ownership, and Permission Review
 
 This phase emphasizes that many host security issues originate from files stored in the wrong location, overly permissive permissions, or incorrect ownership.The focus is not only on running ls, but on fully understanding metadata.
 
@@ -280,7 +280,7 @@ Meaning of the output: In real-world work, analysts must quickly locate relevant
 <img width="2862" height="249" alt="image" src="https://github.com/user-attachments/assets/e0740d25-6dac-4ee3-b6ec-f03066beb1a8" />
 
 
-**Module 03_Phase 4 — Process, Session, Port, and Service Relationship**
+## Module 03_Phase 4 — Process, Session, Port, and Service Relationship
 
 This phase takes students from the file system level to the system activity level. The focus is on understanding running processes, logged-in users, listening ports, and how services appear both from the host perspective and from the workstation perspective.
 
@@ -529,7 +529,7 @@ Nmap done: 1 IP address (1 host up) scanned in 11.62 seconds
 Meaning of the output: Good service discovery always compares the internal host perspective with the assessment perspective.
 
 
-**Module 03_Phase 5 — Log Management, Monitoring, and Evidence Correlation**
+## Module 03_Phase 5 — Log Management, Monitoring, and Evidence Correlation
 
 This phase maximizes the use of Ubuntu and Kali resources: journals, authentication log samples, PCAP samples, and YARA. The primary focus is on building context, not merely running standalone commands.
 
@@ -672,7 +672,7 @@ Expected output:
 suspicious_keywords /home/jccsah001012/datasets/phishing/sample_email_1.txt
 ```
 
-**Module 03_Phase 6 — Automation for Parsing and Evidence Summarization**
+## Module 03_Phase 6 — Automation for Parsing and Evidence Summarization
 
 This phase serves as a direct bridge to scripting and automation modules. We are ask to build two complementary approaches: Bash for quick filtering and Python for more structured summaries.
 
@@ -771,7 +771,7 @@ generation.
 Meaning of the output: We understand that automation must be used with discipline and within the defined scope.
 
 
-**Module 03_Phase 7 — Final Assessment and Bridge to the Next Module**
+## Module 03_Phase 7 — Final Assessment and Bridge to the Next Module
 
 This module concludes with a brief assessment so that we become accustomed to transforming technical output into evaluations that can be understood by others. It also serves as a bridge to Python, automation, secure coding, and blue team analysis modules.
 
@@ -864,6 +864,6 @@ Expected output:
 ```
 Meaning of the output: We are positioned to enter the next module with a more mature context.
 
-**Module 03_Phase 8 — Final Assessment and Bridge to the Next Module**
+## Module 03_Phase 8 — Closing
 
 Module 03 positions the operating system as a real object of observation. We not only read files and processes, but also learn to connect metadata, permissions, sessions, services, logs, and traffic samples into a unified context. With this foundation, the next modules can move further into scripting, automation, secure coding, blue team analysis, and threat hunting without needing to return to the fundamentals of host observation.
