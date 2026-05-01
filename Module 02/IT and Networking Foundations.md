@@ -1,4 +1,4 @@
-**Module 02 — Network Context, Service Exposure, Troubleshooting, Monitoring, and Architecture Thinking**
+# Module 02 — Network Context, Service Exposure, Troubleshooting, Monitoring, and Architecture Thinking
 
 This guide is designed to establish workflows that align closely with operational needs. The focus of this module is not on overly basic networking introductions, but rather on how a student reads host conditions, validates services, tests connectivity, analyzes traffic and logs, and concludes the practice with an assessment that can be understood professionally.
 
@@ -21,7 +21,7 @@ This guide is designed to establish workflows that align closely with operationa
 - Compile architecture and segmentation notes relevant to the lab environment.
 - Conclude the practice with an assessment linking networking foundations to Module 03.
 
-**Module 02_Phase 1 — Workspace and Baseline Host Context**
+## Module 02_Phase 1 — Workspace and Baseline Host Context
 The goal of this phase is to immediately establish the Module 02 workspace and read the primary host's network stack with a more operational perspective.
 
 **Phase 1.1. Build Module 02 Workspace on Ubuntu**
@@ -167,7 +167,7 @@ Link 5 (veth60cffd4)
          Protocols: -DefaultRoute -LLMNR -mDNS -DNSOverTLS DNSSEC=no/unsupported
 ```
 
-**Module 02_Phase 2 — Service Exposure and Validation Perspective**
+## Module 02_Phase 2 — Service Exposure and Validation Perspective
 This phase distinguishes two perspectives that are often confused: what is visible from inside the host, and what is visible from the validation workstation. Ubuntu is used to observe the internal state, while Kali is used to validate exposure in a controlled manner.
 
 **Phase 2.1. Read Listening Ports and Process Context from Ubuntu**
@@ -319,7 +319,7 @@ Meaning of the Output: Notes like this will help us when moving into process ana
 <img width="1427" height="450" alt="image" src="https://github.com/user-attachments/assets/f8acf66c-4040-4a96-bbb7-fc7b7b94d1df" />
 
 
-**Module 02_Phase 3 — Sequential Connectivity Troubleshooting**
+## Module 02_Phase 3 — Sequential Connectivity Troubleshooting
 This phase builds a structured troubleshooting methodology. The goal is not to memorize many commands, but to understand when to use `ping`, `traceroute`, `mtr`, and `netcat`, as well as how to determine the failure domain from the available results.
 
 **Phase 3.1. Build a Ping Matrix on Ubuntu**
@@ -470,7 +470,7 @@ Expected Output: `route_diagnosis.md` is available.
 Meaning of the Output: In the real world, a value does not stop at the commands they run, but extends to the quality of their interpretation.
 
 
-**Module 02_Phase 4 — Operational Monitoring and Packet View**
+## Module 02_Phase 4 — Operational Monitoring and Packet View
 This phase uses Ubuntu as the analysis host. The focus is on reading operational signals from the system journal, authentication log samples, and packet captures, then connecting them as complementary context.
 
 **Phase 4.1. Review the Journal and Authentication Log Sample on Ubuntu**
@@ -581,7 +581,8 @@ Expected Output of `packet_notes.md` is available.
 Meaning of the Output: Small notes like this will be very helpful when we move into blue-team-oriented modules later on.
 
 
-**Module 02_Phase 5 — Architecture Thinking and Cloud/Segmentation Notes**
+## Module 02_Phase 5 — Architecture Thinking and Cloud/Segmentation Notes
+
 This phase transforms network observations into architectural understanding. We begin documenting assets, trust boundaries, segmentation, and exposure notes. This is important so that networking does not stop at being just a collection of commands.
 
 **Phase 5.1. Create a Simple Cloud Mapping Based on the Lab Environment**
@@ -660,7 +661,8 @@ Expected Output of `network_segmentation_notes.md` is available.
 Meaning of the Output: We learn that a good architecture note must be based on real conditions, not generic statements.
 
 
-**Module 02_Phase 6 — Network Case Assessment and Bridge to Module 03**
+## Module 02_Phase 6 — Network Case Assessment and Bridge to Module 03
+
 This closing phase brings all outputs together into a short assessment. We must be able to demonstrate that they are not only running tools, but also understanding the meaning of the results and how they connect to host analysis in the next module.
 
 **Phase 6.1. Write a Network Case Assessment**
@@ -749,8 +751,6 @@ Bridge to Modul 03:
 ```
 Meaning of the Output: We do not begin Module 03 from zero; they enter with a mature networking context already established.
 
-**Module 02_Phase 7 — Closing**
+## Module 02_Phase 7 — Closing
 
-Module 02 should leave a clear impact: We are able to read host baselines, validate services from two perspectives, perform structured troubleshooting, utilize logs and packet summaries, and translate technical findings into architecture notes and short assessments.
-
-With these outcomes, Module 03 can immediately move deeper into file systems, process and port relationships, sessions, logs, and automation without needing to re-explain networking fundamentals from the beginning.
+Module 02 should leave a clear impact: We are able to read host baselines, validate services from two perspectives, perform structured troubleshooting, utilize logs and packet summaries, and translate technical findings into architecture notes and short assessments. With these outcomes, Module 03 can immediately move deeper into file systems, process and port relationships, sessions, logs, and automation without needing to re-explain networking fundamentals from the beginning.
