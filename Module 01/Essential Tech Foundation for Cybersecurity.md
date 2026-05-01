@@ -1,6 +1,5 @@
+# Module 01 — Foundations of Technical Work, the Internet, Linux CLI, and Security Awareness
 This guide is intended for students to carry out practical exercises independently or with guidance. The module does not focus on overly basic exercises, but rather on developing a professional workflow: Understanding the host context, Analyzing services and networks, Managing evidence, Using the Linux CLI efficiently, Concluding the practice with notes that are ready to be used in subsequent modules.
-
-### Module 01 — Foundations of Technical Work, the Internet, Linux CLI, and Security Awareness
 
 **1. Lab Objectives**
 • Understand computers and the internet as real working systems that can be proven through technical observation, not merely definitions.
@@ -12,7 +11,6 @@ This guide is intended for students to carry out practical exercises independent
 **2. Environtment Overview and Host Roles**
 <img width="1797" height="914" alt="Image" src="https://github.com/user-attachments/assets/81f5347f-6140-48ad-ac28-a832b70e66b3" />
 
-
 **3. Practical Workflow**
 • Build the module workspace and establish the host context on Ubuntu and Kali.
 • Validate the basic internet chain: domain names, IP addresses, HTTP headers, and localhost services.
@@ -22,7 +20,7 @@ This guide is intended for students to carry out practical exercises independent
 • Conduct an initial security awareness review based on the artifacts available in the lab.
 • Conclude the practicum with a recap connecting Module 01 to Module 02 and Module 03.
 
-**Module 01_Phase 1 — Establishing the Workspace and Host Context**
+## Module 01_Phase 1 — Establishing the Workspace and Host Context
 This phase is brief but essential. The objective is not to excessively repeat basic checks, but to establish a working baseline that will be used throughout the module and serve as a reference when comparing results from Ubuntu and Kali.
 
 **Phase 1.1. Build the workspace on the Ubuntu Lab**
@@ -97,7 +95,7 @@ Expected Output of `host_context_notes.md` :
 ```
 
 
-**Module 01_Phase 2 — Internet Basics, DNS, HTTP, dan Validasi Service**
+## Module 01_Phase 2 — Internet Basics, DNS, HTTP, dan Validasi Service
 This phase is not intended as an introduction to internet theory. The purpose is to demonstrate that domains, IP addresses, HTTP headers, and local services can actually be read and validated quickly from the appropriate workstation. In this module, Kali is used as the validation workstation, while Ubuntu serves as the place where evidence is collected in an organized manner.
 
 **Phase 2.1. DNS Lookup and Name Resolution on Kali**
@@ -277,7 +275,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 11.58 seconds
 ```
 
-**Module 01_Phase 3 — Evidence Handling, Archiving, and File Integrity **
+## Module 01_Phase 3 — Evidence Handling, Archiving, and File Integrity
 In this phase, discipline is required, it's not only about following commands, but also being able to provide evidence of work or failing to articulate progress in advanced technical modules.
 
 **Phase 3.1. Organize the Workspace and Inventory Notes on Ubuntu**
@@ -332,7 +330,7 @@ tar: Removing leading `/' from hard link targets
 -rw-rw-r-- 1 jccsah001012 jccsah001012 696 Apr 29 17:19 /home/jccsah001012/module01/reports/module01_workspace_initial.tar.gz
 ```
 
-**Module 01_Phase 4 — Programming Logic, Filtering, and Data Summarization **
+## Module 01_Phase 4 — Programming Logic, Filtering, and Data Summarization
 This phase serves as a bridge to scripting and operating systems modules. We are begin to see that technical logic is not only about writing code, but also about reading data, selecting important signals, and producing useful summaries.
 
 **Phase 4.1. Build a Simple Log Artifact for Parsing Practice on Ubuntu**
@@ -428,7 +426,7 @@ Meaning of the output:
 Shell and Python are not positioned as competitors, but as two complementary tools.
 
 
-**Module 01_Phase 5 — Linux CLI, Navigation, Metadata, and Permission Review **
+## Module 01_Phase 5 — Linux CLI, Navigation, Metadata, and Permission Review
 This phase is more than just using cd and ls. The focus is on building the habit of reading paths, metadata, ownership, and permissions as part of real technical work.
 
 **Phase 5.1. Navigation and Directory Structure Review on Ubuntu**
@@ -577,7 +575,7 @@ Meaning of the output:
 This habit will become the foundation for log review, evidence triage, and case analysis.
 
 
-**Module 01_Phase 6 — Security Awareness Based on Artifacts and Observation **
+## Module 01_Phase 6 — Security Awareness Based on Artifacts and Observation
 Security awareness in this module is designed to be practical and closely related to real-world work. We are asked to examine artifacts, identify signs of risk, and clearly document their findings, rather than simply memorizing security slogans.
 
 **Phase 6.1. Review a Phishing Email Sample Artifact on Ubuntu**
@@ -640,7 +638,7 @@ Expected Output of `risky_strings_findings.txt` are displayed :
 /home/jccsah001012/datasets/logs/linux/auth.log.sample:4:Apr 21 09:00:18 labhost sshd[1221]: Accepted password for jccsah001001 from 10.10.10.50 port 53155 ssh2
 ```
 
-**Module 01_Phase 7 — Final Recap and Bridge to the Next Module **
+## Module 01_Phase 7 — Final Recap and Bridge to the Next Module
 This phase concludes the module with the same discipline used in professional work: 
 work results are summarized, readiness gaps are noted, and the connection to the next module is clearly emphasized.
 
@@ -711,11 +709,8 @@ Expected Output of `reflection_notes.md` is available in the reports folder :
 - Modul 02 will deepen service exposure, troubleshooting, and monitoring
 - Modul 03 will deepen file system, process, logs, and automation
 ```
+Meaning of the output:We are positioned to move into the next modules with a more mature context, rather than starting from zero again.
 
-Meaning of the output:
-We are positioned to move into the next modules with a more mature context, rather than starting from zero again.
-
-
-**Module 01_Phase 8 — Closing**
+## Module 01_Phase 8 — Closing
 This module establishes a proper and structured working foundation:
 We know which host we are working on, understand how to validate services and the internet chain, are accustomed to preserving evidence, are capable of performing simple filtering, and are becoming comfortable reading metadata and permissions.
