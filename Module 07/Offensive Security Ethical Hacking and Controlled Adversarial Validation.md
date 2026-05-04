@@ -251,3 +251,109 @@ Expected output:
  - Shared host boundaries are intentional controls.
  - Offensive validation must stop before crossing privilege boundaries on shared infrastructure.
 ```
+
+
+
+## Module 07_Phase 4 — Web Behavior Validation and Application Observations
+This phase leverages local targets to analyze application behavior from the perspective of an offensive workstation. The focus is not on active exploitation, but on sharp observation to understand potential weaknesses or areas that require deeper review.
+
+**Phase 4.1. Review header and redirect behavior**
+```
+curl -I http://127.0.0.1:3000 | tee ~/module07/evidence/web/header_review.txt
+curl -I http://127.0.0.1:8081 | tee -a ~/module07/evidence/web/header_review.txt
+```
+Command function:
+- Reads status codes, redirects, and headers from local targets.
+- Captures early signals about application behavior and visible surface.
+
+Expected output:
+- Header responses are displayed for each target.
+```
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0  75002   0      0   0      0      0      0                              0
+HTTP/1.1 200 OK
+Access-Control-Allow-Origin: *
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+Feature-Policy: payment 'self'
+X-Recruiting: /#/jobs
+Accept-Ranges: bytes
+Cache-Control: public, max-age=0
+Last-Modified: Mon, 20 Apr 2026 13:15:48 GMT
+ETag: W/"124fa-19dab08698f"
+Content-Type: text/html; charset=UTF-8
+Content-Length: 75002
+Vary: Accept-Encoding
+Date: Mon, 04 May 2026 13:57:32 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0
+HTTP/1.1 302 Found
+Date: Mon, 04 May 2026 13:57:44 GMT
+Server: Apache/2.4.25 (Debian)
+Set-Cookie: PHPSESSID=pps0fkg9vikh8ig7fn9n0ke7c4; path=/
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate
+Pragma: no-cache
+Set-Cookie: PHPSESSID=pps0fkg9vikh8ig7fn9n0ke7c4; path=/
+Set-Cookie: security=low
+Location: login.php
+Content-Type: text/html; charset=UTF-8
+```
+
+**Phase 4.2. Validate endpoint behavior from the workstation side**
+```
+curl -s http://127.0.0.1:3000 | head -n 20 | tee ~/module07/evidence/web/endpoint_behavior.txt
+curl -s http://127.0.0.1:8081 | head -n 20 | tee -a ~/module07/evidence/web/endpoint_behavior.txt
+```
+Command function:
+- Displays a snapshot of the initial response from the target.
+- Helps distinguish whether the target returns full content, a redirect, or just a placeholder response.
+
+Expected output:
+- A snippet of HTML or text response from the endpoints is shown.
+<img width="1740" height="912" alt="image" src="https://github.com/user-attachments/assets/d9c77df2-edce-4010-ae42-d7550b397108" />
+Notes: target 8081 redirect to login page.
+
+**Phase 4.3. Write proportional application observations**
+```
+cat > ~/module07/evidence/web/app_observations.md <<'EOF' 
+# Application Observations 
+
+## What is Visible
+ - HTTP responses and routes can be observed from localhost targets.
+ - Headers and redirect behavior give limited but useful clues.
+ - Fingerprinting and content discovery help build context. 
+
+## What is not proven yet
+ - Backend authorization quality
+ - Input validation depth
+ - Session handling quality 
+ - Business logic security 
+EOF
+cat ~/module07/evidence/web/app_observations.md
+```
+Command function:
+- Trains us to write observations that are sharp but not overreaching.
+
+Expected output:
+- app_observations.md file is created.
+```
+# Application Observations 
+
+## What is Visible
+ - HTTP responses and routes can be observed from localhost targets.
+ - Headers and redirect behavior give limited but useful clues.
+ - Fingerprinting and content discovery help build context. 
+
+## What is not proven yet
+ - Backend authorization quality
+ - Input validation depth
+ - Session handling quality 
+ - Business logic security
+```
