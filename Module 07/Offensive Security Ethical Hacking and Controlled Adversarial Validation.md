@@ -240,7 +240,7 @@ Command function:
 - Encourage students to think in testable hypotheses rather than making premature claims.
 
 Expected output:
-- access_hypotheses.md is created and available.
+- `access_hypotheses.md` is created and available.
 ```
 # Auth Surface Notes 
  - Login pages, session behavior, and redirect patterns are part of the auth surface.
@@ -342,7 +342,7 @@ Command function:
 - Trains us to write observations that are sharp but not overreaching.
 
 Expected output:
-- app_observations.md file is created.
+- `app_observations.md` file is created.
 ```
 # Application Observations 
 
@@ -357,3 +357,249 @@ Expected output:
  - Session handling quality 
  - Business logic security
 ```
+
+
+## Module 07_Phase 5 — Automation Support and Evidence Merging
+This phase uses automation in a practical way to support the offensive workflow: combining results, organizing evidence, and speeding up the review process. The goal is not to build large tools, but to make the assessment process more structured and efficient.
+
+**Phase 5.1. Merge enumeration results into a single summary**
+```
+cat ~/module07/evidence/enumeration/nmap_local_targets.txt
+cat ~/module07/evidence/enumeration/web_fingerprint.txt
+cat ~/module07/evidence/enumeration/content_discovery.txt 2>/dev/null | tee ~/module07/evidence/automation/automation_validation.txt
+```
+Command function:
+- Combines key outputs into one place for easier review before writing the assessment.
+
+Expected output:
+- `automation_validation.txt` contains merged and relevant outputs.
+```
+nmap_local_targets.txt:
+# Nmap 7.99 scan initiated Mon May  4 12:57:14 2026 as: /usr/lib/nmap/nmap --privileged -Pn -sV -p 3000,8081 -oN /home/jccsah001012/module07/evidence/enumeration/nmap_local_targets.txt 127.0.0.1
+Nmap scan report for localhost (127.0.0.1)
+Host is up (0.000068s latency).
+
+PORT     STATE SERVICE VERSION
+3000/tcp open  ppp?
+8081/tcp open  http    Apache httpd 2.4.25 ((Debian))
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port3000-TCP:V=7.99%I=7%D=5/4%Time=69F897B6%P=x86_64-pc-linux-gnu%r(Get
+SF:Request,101B9,"HTTP/1\.1\x20200\x20OK\r\nAccess-Control-Allow-Origin:\x
+SF:20\*\r\nX-Content-Type-Options:\x20nosniff\r\nX-Frame-Options:\x20SAMEO
+SF:RIGIN\r\nFeature-Policy:\x20payment\x20'self'\r\nX-Recruiting:\x20/#/jo
+SF:bs\r\nAccept-Ranges:\x20bytes\r\nCache-Control:\x20public,\x20max-age=0
+SF:\r\nLast-Modified:\x20Mon,\x2020\x20Apr\x202026\x2013:15:48\x20GMT\r\nE
+SF:Tag:\x20W/\"124fa-19dab08698f\"\r\nContent-Type:\x20text/html;\x20chars
+SF:et=UTF-8\r\nContent-Length:\x2075002\r\nVary:\x20Accept-Encoding\r\nDat
+SF:e:\x20Mon,\x2004\x20May\x202026\x2012:57:26\x20GMT\r\nConnection:\x20cl
+SF:ose\r\n\r\n<!--\n\x20\x20~\x20Copyright\x20\(c\)\x202014-2026\x20Bjoern
+SF:\x20Kimminich\x20&\x20the\x20OWASP\x20Juice\x20Shop\x20contributors\.\n
+SF:\x20\x20~\x20SPDX-License-Identifier:\x20MIT\n\x20\x20-->\n\n<!doctype\
+SF:x20html>\n<html\x20lang=\"en\"\x20data-beasties-container>\n<head>\n\x2
+SF:0\x20<meta\x20charset=\"utf-8\">\n\x20\x20<title>OWASP\x20Juice\x20Shop
+SF:</title>\n\x20\x20<meta\x20name=\"description\"\x20content=\"Probably\x
+SF:20the\x20most\x20modern\x20and\x20sophisticated\x20insecure\x20web\x20a
+SF:pplication\">\n\x20\x20<meta\x20name=\"viewport\"\x20content=\"width=de
+SF:vice-width,\x20initial-scale=1\">\n\x20\x20<link\x20id=\"favicon\"\x20r
+SF:el=\"icon\"\x20")%r(Help,2F,"HTTP/1\.1\x20400\x20Bad\x20Request\r\nConn
+SF:ection:\x20close\r\n\r\n")%r(NCP,2F,"HTTP/1\.1\x20400\x20Bad\x20Request
+SF:\r\nConnection:\x20close\r\n\r\n")%r(HTTPOptions,EA,"HTTP/1\.1\x20204\x
+SF:20No\x20Content\r\nAccess-Control-Allow-Origin:\x20\*\r\nAccess-Control
+SF:-Allow-Methods:\x20GET,HEAD,PUT,PATCH,POST,DELETE\r\nVary:\x20Access-Co
+SF:ntrol-Request-Headers\r\nContent-Length:\x200\r\nDate:\x20Mon,\x2004\x2
+SF:0May\x202026\x2012:57:26\x20GMT\r\nConnection:\x20close\r\n\r\n")%r(RTS
+SF:PRequest,EA,"HTTP/1\.1\x20204\x20No\x20Content\r\nAccess-Control-Allow-
+SF:Origin:\x20\*\r\nAccess-Control-Allow-Methods:\x20GET,HEAD,PUT,PATCH,PO
+SF:ST,DELETE\r\nVary:\x20Access-Control-Request-Headers\r\nContent-Length:
+SF:\x200\r\nDate:\x20Mon,\x2004\x20May\x202026\x2012:57:26\x20GMT\r\nConne
+SF:ction:\x20close\r\n\r\n");
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon May  4 12:57:26 2026 -- 1 IP address (1 host up) scanned in 11.65 seconds
+
+web_fingerprint.txt:
+http://127.0.0.1:3000 [200 OK] Country[RESERVED][ZZ], HTML5, IP[127.0.0.1], Script[module], Title[OWASP Juice Shop], UncommonHeaders[access-control-allow-origin,x-content-type-options,feature-policy,x-recruiting], X-Frame-Options[SAMEORIGIN]
+http://127.0.0.1:8081 [302 Found] Apache[2.4.25], Cookies[PHPSESSID,security], Country[RESERVED][ZZ], HTTPServer[Debian Linux][Apache/2.4.25 (Debian)], IP[127.0.0.1], RedirectLocation[login.php]
+http://127.0.0.1:8081/login.php [200 OK] Apache[2.4.25], Country[RESERVED][ZZ], DVWA, HTTPServer[Debian Linux][Apache/2.4.25 (Debian)], IP[127.0.0.1], PHP, PasswordField[password], Title[Login :: Damn Vulnerable Web Application (DVWA) v1.10 *Development*]
+
+automation_validation.txt:
+robots.txt              [Status: 200, Size: 28, Words: 3, Lines: 2, Duration: 3ms]
+api                     [Status: 500, Size: 3011, Words: 235, Lines: 50, Duration: 33ms]
+uploads                 [Status: 200, Size: 75002, Words: 3679, Lines: 31, Duration: 40ms]
+test                    [Status: 200, Size: 75002, Words: 3679, Lines: 31, Duration: 48ms]
+admin                   [Status: 200, Size: 75002, Words: 3679, Lines: 31, Duration: 51ms]
+backup                  [Status: 200, Size: 75002, Words: 3679, Lines: 31, Duration: 41ms]
+login                   [Status: 200, Size: 75002, Words: 3679, Lines: 31, Duration: 52ms]
+```
+
+**Phase 5.2. Create a simple parser assist on Ubuntu**
+```
+cat > ~/module07/evidence/tmp/parser_assist.py <<'EOF' 
+from pathlib import Path 
+files = [ 
+Path.home() / 'mod7' / 'evidence' / 'enumeration' / 'nmap_local_targets.txt', 
+Path.home() / 'mod7' / 'evidence' / 'web' / 'header_review.txt' 
+] 
+for f in files: 
+if f.exists(): 
+print(f'FILE: {f.name}') 
+print(f.read_text(errors='ignore')[:500]) 
+print('-' * 40) 
+EOF
+cat ~/module07/evidence/tmp/parser_assist.py
+```
+Command function:
+- Demonstrates that Ubuntu remains useful as an analysis host to review offensive outputs in a cleaner way.
+- Encourages using automation to speed up review, not replace reasoning.
+
+Expected output:
+- Snippets of key files are displayed with clear file labels.
+<img width="1297" height="403" alt="image" src="https://github.com/user-attachments/assets/1dc00bee-31a4-45fa-8982-4daff768d94d" />
+
+**Phase 5.3. Write notes on evidence merging**
+```
+cat > ~/module07/evidence/automation/evidence_merge_notes.md <<'EOF' 
+# Evidence Merge Notes
+ - Enumeration, headers, and content discovery should be reviewed together.
+ - One tool output rarely gives the full picture.
+ - Offensive findings should be written from merged evidence, not isolated screenshots. 
+EOF
+cat ~/module07/evidence/automation/evidence_merge_notes.md
+```
+Command function:
+- Reinforces that quality assessment depends on the ability to combine distributed results.
+
+Expected output:
+- `evidence_merge_notes.md` is created.
+<img width="1426" height="231" alt="image" src="https://github.com/user-attachments/assets/7d4fddb9-3bbb-4445-94b3-fded80b8f5c5" />
+
+
+## Module 07_Phase 6 — Adversary Timeline, Findings, and Case Assessment
+This phase concludes the technical work with a more mature narrative. We organize the sequence of their assessment, summarize findings, and write impact reasoning in a proportional way. The focus is not on making findings sound dramatic, but on making them clear and readable.
+
+**Phase 6.1. Build an adversary-style timeline from performed activities**
+```
+cat > ~/module07/evidence/case/adversary_timeline.md <<'EOF' 
+# Adversary Timeline 
+1. Scope confirmed. 
+2. Local target services identified. 
+3. Fingerprinting and content discovery performed. 
+4. Auth and trust boundary observations documented. 
+5. Endpoint behavior reviewed. 
+6. Evidence merged for final assessment. 
+EOF
+cat ~/module07/evidence/case/adversary_timeline.md
+```
+Command function:
+- Trains us to structure their workflow as a clear, explainable operational sequence.
+
+Expected output:
+- `adversary_timeline.md` is created.
+<img width="906" height="350" alt="image" src="https://github.com/user-attachments/assets/8c148c27-9737-4083-afef-4673c8e21b83" />
+
+**Phase 6.2. Write findings summary and final case assessment**
+```
+cat > ~/module07/evidence/case/findings_summary.md <<'EOF' 
+# Findings Summary
+ - Local targets expose observable web behavior suitable for controlled validation.
+ - Fingerprinting and content discovery provide useful context but do not prove deeper weakness 
+by themselves.
+ - Auth surface and privilege boundaries remain important constraints in the lab. 
+EOF
+cat ~/module07/evidence/case/findings_summary.md
+
+cat > ~/module07/evidence/case/final_case_assessment.md <<'EOF' 
+# Final Case Assessment 
+ 
+## Summary 
+The offensive workflow identified visible application behavior, service exposure, and route context within an authorized localhost-only scope. The value of the assessment comes from disciplined scope control, evidence merging, and careful claims, not from aggressive actions. 
+ 
+## Impact Reasoning
+ - Better visibility into target behavior
+ - Better understanding of observable attack surface
+ - Better separation between verified finding and unverified assumption 
+EOF
+cat ~/module07/evidence/case/final_case_assessment.md
+```
+Command function:
+- Builds the habit of writing findings and assessments in a proportional and evidence-based manner.
+
+Expected output:
+- `findings_summary.md` and `final_case_assessment.md` are created.
+```
+findings_summary.md:
+# Findings Summary
+ - Local targets expose observable web behavior suitable for controlled validation.
+ - Fingerprinting and content discovery provide useful context but do not prove deeper weakness 
+by themselves.
+ - Auth surface and privilege boundaries remain important constraints in the lab.
+
+final_case_assessment.md:
+# Final Case Assessment 
+ 
+## Summary 
+The offensive workflow identified visible application behavior, service exposure, and route context within an authorized localhost-only scope. The value of the assessment comes from disciplined scope control, evidence merging, and careful claims, not from aggressive actions. 
+ 
+## Impact Reasoning
+ - Better visibility into target behavior
+ - Better understanding of observable attack surface
+ - Better separation between verified finding and unverified assumption
+```
+
+
+## Module 07_Phase 7 — Final Outputs and Program Closure
+This final phase not only concludes Module 07, but also wraps up the entire series of Modules 1–7. We are expected to reflect on what they have built from foundational skills to offensive reasoning, so the whole program feels cohesive and complete.
+
+**Phase 7.1. Build an adversary-style timeline from performed activities**
+```
+cat > ~/module07/reports/module07_assessment.md <<'EOF' 
+# Module 07 Assessment 
+ 
+## Summary 
+Offensive security in this program is treated as controlled adversarial validation. Kali is used as the primary offensive workstation, while Ubuntu remains critical for reviewing, merging, and writing evidence-based findings. 
+ 
+## Practical Takeaway
+ - Scope matters
+ - Enumeration must stay controlled
+ - Findings must be evidence-based
+ - Strong offensive reasoning still depends on defensive understanding 
+EOF
+cat ~/module07/reports/module07_assessment.md
+```
+Command function:
+- Concludes the module with an assessment that is ready to be read professionally.
+
+Expected output:
+- `module07_assessment.md` is created.
+<img width="2871" height="432" alt="image" src="https://github.com/user-attachments/assets/a1c47af9-1976-4c36-a3a9-9904832b871f" />
+
+**Phase 7.2. Write program completion notes**
+```
+cat > ~/module07/reports/program_completion_notes.md <<'EOF' 
+# Program Completion Notes 
+
+## What The Full Program Built
+ - Host and evidence discipline
+ - Network and service reasoning
+ - OS and process awareness
+ - Python and automation workflow
+ - Cybersecurity core reasoning
+ - Defensive analysis and incident thinking
+ - Controlled offensive validation 
+
+## Final Note 
+A strong cybersecurity practitioner must connect offensive understanding with defensive 
+discipline, evidence quality, and clear communication. 
+EOF
+cat ~/module07/reports/program_completion_notes.md
+```
+Command function:
+- Positions Module 07 as the conclusion of a complete program, not just the final module.
+
+Expected output:
+- `program_completion_notes.md` is created.
+<img width="1433" height="539" alt="image" src="https://github.com/user-attachments/assets/340c7bc5-cbbd-4880-8e17-9f173b6b9fb9" />
+
+
+# Module 07_Closing
+Module 07 is designed to help us understand that healthy offensive security is not about aggressiveness, but about scope, validation, evidence, and sound judgment. By concluding the program with this module, we are expected to recognize that strong offensive capability is always built upon the foundations of host, network, systems, automation, cybersecurity core reasoning, and defensive discipline developed throughout Modules 1 to 6.
